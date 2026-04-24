@@ -1,0 +1,25 @@
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
+<%--  Підключаємо основну бібліотеку JSTL. У цьому файлі вона потрібна для тега c:if. --%>
+<%@ taglib prefix="c" uri="jakarta.tags.core" %>
+
+
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>${pageTitle}</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/common.css">
+    <c:if test="${not empty pageStyle}">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/${pageStyle}">
+    </c:if>
+    <%-- Якщо для поточної сторінки задано окремий CSS-файл,то підключаємо і його.
+        Наприклад, для search.jsp це може бути client-search.css. --%>
+</head>
+<body>
+<div class="container">
+    <nav class="nav">
+        <a href="${pageContext.request.contextPath}/">Головна</a>
+        <a href="${pageContext.request.contextPath}/client/search">Пошук для клієнта</a>
+        <a href="${pageContext.request.contextPath}/owner/apartments">Кабінет хазяїна</a>
+    </nav>
+    <hr class="page-divider"/>

@@ -1,0 +1,11 @@
+.owner-toolbar {
+    margin-bottom: 16px;
+}
+
+.owner-status div + div {
+    margin-top: 6px;
+}
+
+.owner-actions {
+    min-width: 170px;
+}
