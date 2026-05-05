@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 
 
 /**  Модель квартири. Java-клас, який зберігає дані про одну квартиру. **/
-
+// клас Apartment реалізує інтерфейс Serializable
 public class Apartment implements Serializable {
     private Long id;    // Унікальний ідентифікатор квартири.
     private String title;   // Коротка назва оголошення.
@@ -45,8 +45,6 @@ public class Apartment implements Serializable {
     }
 
     // Нижче йдуть getter-и та setter-и.
-    // Getter повертає значення поля.
-    // Setter змінює значення поля.
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }

@@ -7,9 +7,6 @@
 
 <h1>Пошук квартири по параметрам</h1>
 
-
-<!--  Форма пошуку. Метод GET використовується тому, що пошук не змінює дані, а лише запитує їх.
-Усі введені параметри будуть видні в адресному рядку. -->
 <form class="search-form" method="get" action="${pageContext.request.contextPath}/client/search">
     <div class="row">
 
@@ -46,6 +43,15 @@
             </select>
         </div>
 
+        <div class="field">
+            <label>На сторінці</label>
+            <select name="size">
+                <option value="3" ${pageSize == 3 ? 'selected' : ''}>3</option>
+                <option value="5" ${pageSize == 5 ? 'selected' : ''}>5</option>
+                <option value="10" ${pageSize == 10 ? 'selected' : ''}>10</option>
+            </select>
+        </div>
+
     </div>
     <div class="search-actions">
         <button class="btn" type="submit">Знайти</button>
@@ -60,6 +66,10 @@
     </c:when>
 
     <c:otherwise>
+        <p class="pagination-info">
+            Знайдено оголошень: ${totalItems}. Сторінка ${currentPage} з ${totalPages}.
+        </p>
+
         <c:forEach var="apartment" items="${results}">
             <div class="card apartment-card">
                 <h3><c:out value="${apartment.title}"/></h3>
@@ -83,6 +93,75 @@
                 </c:choose>
             </div>
         </c:forEach>
+
+        <c:if test="${totalPages > 1}">
+            <div class="pagination-wrap">
+                <div class="pagination">
+
+                    <!-- Стрілка назад -->
+                    <c:choose>
+                        <c:when test="${currentPage > 1}">
+                            <c:url var="prevPageUrl" value="/client/search">
+                                <c:param name="city" value="${param.city}" />
+                                <c:param name="minRooms" value="${param.minRooms}" />
+                                <c:param name="maxPrice" value="${param.maxPrice}" />
+                                <c:param name="furnished" value="${param.furnished}" />
+                                <c:param name="petsAllowed" value="${param.petsAllowed}" />
+                                <c:param name="size" value="${pageSize}" />
+                                <c:param name="page" value="${currentPage - 1}" />
+                            </c:url>
+                            <a class="page-arrow" href="${prevPageUrl}">&#8592;</a>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="page-arrow disabled">&#8592;</span>
+                        </c:otherwise>
+                    </c:choose>
+
+                    <!-- Номери сторінок -->
+                    <div class="page-numbers">
+                        <c:forEach begin="1" end="${totalPages}" var="i">
+                            <c:choose>
+                                <c:when test="${i == currentPage}">
+                                    <span class="page-number active">${i}</span>
+                                </c:when>
+                                <c:otherwise>
+                                    <c:url var="pageUrl" value="/client/search">
+                                        <c:param name="city" value="${param.city}" />
+                                        <c:param name="minRooms" value="${param.minRooms}" />
+                                        <c:param name="maxPrice" value="${param.maxPrice}" />
+                                        <c:param name="furnished" value="${param.furnished}" />
+                                        <c:param name="petsAllowed" value="${param.petsAllowed}" />
+                                        <c:param name="size" value="${pageSize}" />
+                                        <c:param name="page" value="${i}" />
+                                    </c:url>
+                                    <a class="page-number" href="${pageUrl}">${i}</a>
+                                </c:otherwise>
+                            </c:choose>
+                        </c:forEach>
+                    </div>
+
+                    <!-- Стрілка вперед -->
+                    <c:choose>
+                        <c:when test="${currentPage < totalPages}">
+                            <c:url var="nextPageUrl" value="/client/search">
+                                <c:param name="city" value="${param.city}" />
+                                <c:param name="minRooms" value="${param.minRooms}" />
+                                <c:param name="maxPrice" value="${param.maxPrice}" />
+                                <c:param name="furnished" value="${param.furnished}" />
+                                <c:param name="petsAllowed" value="${param.petsAllowed}" />
+                                <c:param name="size" value="${pageSize}" />
+                                <c:param name="page" value="${currentPage + 1}" />
+                            </c:url>
+                            <a class="page-arrow" href="${nextPageUrl}">&#8594;</a>
+                        </c:when>
+                        <c:otherwise>
+                            <span class="page-arrow disabled">&#8594;</span>
+                        </c:otherwise>
+                    </c:choose>
+
+                </div>
+            </div>
+        </c:if>
     </c:otherwise>
 </c:choose>
 

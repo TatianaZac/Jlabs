@@ -17,7 +17,7 @@ public class ApartmentSearchCriteria implements Serializable {
     // Якщо true/false — шукаємо тільки відповідні квартири.
     private Boolean furnished;
 
-    // Аналогічно: null означає "не фільтрувати за цією ознакою".
+    // Аналогічно: null означає не фільтрувати за цією ознакою.
     private Boolean petsAllowed;
 
     public String getCity() { return city; }
