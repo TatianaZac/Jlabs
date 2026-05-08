@@ -2,7 +2,8 @@ package com.example.lab2.web;
 
 import com.example.lab2.model.Apartment;
 import com.example.lab2.model.ApartmentSearchCriteria;
-import com.example.lab2.service.ApartmentService;
+import com.example.lab2.service.ApartmentServiceLocal;
+import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -34,7 +35,8 @@ public class SearchServlet extends HttpServlet {
     private static final int DEFAULT_PAGE_SIZE = 3;
 
     // Отримуємо спільний об'єкт сервісу, який зберігає та шукає квартири
-    private final ApartmentService apartmentService = ApartmentService.getInstance();
+    @EJB
+    private ApartmentServiceLocal apartmentService;
 
     /**
      * Метод doGet виконується, коли користувач відкриває сторінку пошуку
@@ -66,12 +68,10 @@ public class SearchServlet extends HttpServlet {
         // Якщо параметра немає або він некоректний, буде використано DEFAULT_PAGE.
         int page = parsePositiveInteger(req.getParameter("page"), DEFAULT_PAGE);
 
-//      Зчитуємо кількість квартир на сторінці.Якщо параметра немає або він некоректний, буде використано DEFAULT_PAGE_SIZE.
+        // Зчитуємо кількість квартир на сторінці.
+        // Якщо параметра немає або він некоректний, буде використано DEFAULT_PAGE_SIZE.
         int pageSize = parsePositiveInteger(req.getParameter("size"), DEFAULT_PAGE_SIZE);
 
-        /**
-         * Пагінація
-         */
         // Отримуємо всі квартири, які відповідають критеріям пошуку
         List<Apartment> allResults = apartmentService.search(criteria);
 
@@ -82,12 +82,14 @@ public class SearchServlet extends HttpServlet {
         // Наприклад: якщо знайдено 12 квартир і pageSize = 3, буде 4 сторінки.
         int totalPages = (int) Math.ceil((double) totalItems / pageSize);
 
-        // Якщо нічого не знайдено, все одно залишаємо одну сторінку, щоб у JSP не було проблем з відображенням.
+        // Якщо нічого не знайдено, все одно залишаємо одну сторінку,
+        // щоб у JSP не було проблем з відображенням.
         if (totalPages == 0) {
             totalPages = 1;
         }
 
-        // Якщо користувач вручну ввів сторінку більшу, ніж існує, переносимо його на останню доступну сторінку.
+        // Якщо користувач вручну ввів сторінку більшу, ніж існує,
+        // переносимо його на останню доступну сторінку.
         if (page > totalPages) {
             page = totalPages;
         }

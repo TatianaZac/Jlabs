@@ -1,6 +1,7 @@
 package com.example.lab2.web;
 
-import com.example.lab2.service.ApartmentService;
+import com.example.lab2.service.ApartmentServiceLocal;
+import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -16,7 +17,8 @@ import java.io.IOException;
 
 @WebServlet("/owner/apartments")
 public class OwnerApartmentsServlet extends HttpServlet {
-    private final ApartmentService apartmentService = ApartmentService.getInstance();
+    @EJB
+    private ApartmentServiceLocal apartmentService;
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

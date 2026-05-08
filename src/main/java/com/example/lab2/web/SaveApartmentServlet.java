@@ -1,7 +1,8 @@
 package com.example.lab2.web;
 
 import com.example.lab2.model.Apartment;
-import com.example.lab2.service.ApartmentService;
+import com.example.lab2.service.ApartmentServiceLocal;
+import jakarta.ejb.EJB;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -18,7 +19,8 @@ import java.math.BigDecimal;
 
 @WebServlet("/owner/save-apartment")
 public class SaveApartmentServlet extends HttpServlet {
-    private final ApartmentService apartmentService = ApartmentService.getInstance();
+    @EJB
+    private ApartmentServiceLocal apartmentService;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

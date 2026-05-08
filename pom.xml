@@ -27,6 +27,15 @@
     </dependencyManagement>
 
     <dependencies>
+
+        <!-- EJB API для ЛР4. На GlassFish реалізація вже є, тому scope provided. -->
+        <dependency>
+            <groupId>jakarta.ejb</groupId>
+            <artifactId>jakarta.ejb-api</artifactId>
+            <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>
@@ -102,7 +111,7 @@
     </dependencies>
 
     <build>
-        <finalName>lab2-apartment-rental</finalName>
+        <finalName>lab4-apartment-rental-ejb</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

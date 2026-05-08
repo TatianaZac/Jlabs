@@ -5,7 +5,8 @@ import com.example.lab2.api.dto.ApartmentPageResponse;
 import com.example.lab2.api.dto.ApartmentRequest;
 import com.example.lab2.model.Apartment;
 import com.example.lab2.model.ApartmentSearchCriteria;
-import com.example.lab2.service.ApartmentService;
+import com.example.lab2.service.ApartmentServiceLocal;
+import jakarta.ejb.EJB;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
@@ -38,14 +39,15 @@ import java.util.Set;
  */
 
 @Path("/apartments")
-//@Produces(MediaType.APPLICATION_JSON)
-//@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ApartmentResource {
 
     /**
      * apartmentService — це сервісний шар.Він виконує основну логіку роботи з квартирами:
      */
-    private final ApartmentService apartmentService = ApartmentService.getInstance();
+    @EJB
+    private ApartmentServiceLocal apartmentService;
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
