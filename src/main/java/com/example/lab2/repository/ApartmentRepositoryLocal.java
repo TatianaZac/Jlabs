@@ -1,12 +1,13 @@
 package com.example.lab2.repository;
 
 import com.example.lab2.model.Apartment;
+import com.example.lab2.model.ApartmentSearchCriteria;
 
 import java.util.List;
 
 /**
- * Локальний бізнес-інтерфейс EJB для доступу до даних.
- * заглушка замість повноцінної БД: дані зберігаються у пам'яті.
+ * Локальний бізнес-інтерфейс рівня доступу до даних.
+ * Для ЛР6 реалізація працює через JPA + DAO.
  */
 public interface ApartmentRepositoryLocal {
     List<Apartment> findAll();
@@ -18,4 +19,6 @@ public interface ApartmentRepositoryLocal {
     boolean update(Long id, Apartment apartment);
 
     boolean deleteById(Long id);
+
+    List<Apartment> search(ApartmentSearchCriteria criteria);
 }

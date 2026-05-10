@@ -1,28 +1,65 @@
 package com.example.lab2.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
+
 import java.io.Serializable;
 import java.math.BigDecimal;
 
-
-/**  Модель квартири. Java-клас, який зберігає дані про одну квартиру. **/
-
+/**  JPA-сутність квартири. **/
+@Entity
+@Table(name = "apartments")
 public class Apartment implements Serializable {
-    private Long id;    // Унікальний ідентифікатор квартири.
-    private String title;   // Коротка назва оголошення.
-    private String city;    // Місто, у якому розташована квартира.
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false, length = 255)
+    private String title;
+
+    @Column(nullable = false, length = 100)
+    private String city;
+
+    @Column(nullable = false, length = 100)
     private String district;
+
+    @Column(nullable = false)
     private int rooms;
-    private double area;    // Площа квартири у квадратних метрах.
+
+    @Column(nullable = false)
+    private double area;
+
+    @Column(nullable = false)
     private int floor;
+
+    @Column(name = "price_per_month", nullable = false, precision = 12, scale = 2)
     private BigDecimal pricePerMonth;
-    private boolean furnished;  // Чи є меблі.
+
+    @Column(nullable = false)
+    private boolean furnished;
+
+    @Column(name = "pets_allowed", nullable = false)
     private boolean petsAllowed;
+
+    @Column(columnDefinition = "TEXT")
     private String description;
-    private String ownerName;
-    private String phone;
 
+    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "owner_id", nullable = false)
+    private Owner owner;
 
-    /** Конструктор потрібен, для заповнення форми. **/
+    /** Конструктор потрібен для JPA та заповнення форми. */
     public Apartment() {
     }
 
@@ -40,13 +77,8 @@ public class Apartment implements Serializable {
         this.furnished = furnished;
         this.petsAllowed = petsAllowed;
         this.description = description;
-        this.ownerName = ownerName;
-        this.phone = phone;
+        this.owner = new Owner(ownerName, phone);
     }
-
-    // Нижче йдуть getter-и та setter-и.
-    // Getter повертає значення поля.
-    // Setter змінює значення поля.
 
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
@@ -81,9 +113,37 @@ public class Apartment implements Serializable {
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
 
-    public String getOwnerName() { return ownerName; }
-    public void setOwnerName(String ownerName) { this.ownerName = ownerName; }
+    public Owner getOwner() {
+        return owner;
+    }
 
-    public String getPhone() { return phone; }
-    public void setPhone(String phone) { this.phone = phone; }
+    public void setOwner(Owner owner) {
+        this.owner = owner;
+    }
+
+    @Transient
+    public String getOwnerName() {
+        return owner != null ? owner.getName() : null;
+    }
+
+    public void setOwnerName(String ownerName) {
+        ensureOwner();
+        owner.setName(ownerName);
+    }
+
+    @Transient
+    public String getPhone() {
+        return owner != null ? owner.getPhone() : null;
+    }
+
+    public void setPhone(String phone) {
+        ensureOwner();
+        owner.setPhone(phone);
+    }
+
+    private void ensureOwner() {
+        if (owner == null) {
+            owner = new Owner();
+        }
+    }
 }

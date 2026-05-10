@@ -28,11 +28,19 @@
 
     <dependencies>
 
-        <!-- EJB API для ЛР4. На GlassFish реалізація вже є, тому scope provided. -->
+        <!-- EJB API для бізнес-логіки -->
         <dependency>
             <groupId>jakarta.ejb</groupId>
             <artifactId>jakarta.ejb-api</artifactId>
             <version>4.0.1</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <!-- JPA API для ЛР6. Реалізація на GlassFish вже є. -->
+        <dependency>
+            <groupId>jakarta.persistence</groupId>
+            <artifactId>jakarta.persistence-api</artifactId>
+            <version>3.1.0</version>
             <scope>provided</scope>
         </dependency>
 
@@ -69,7 +77,7 @@
             <version>3.1.0</version>
         </dependency>
 
-        <!-- Jersey: реалізація JAX-RS для запуску на Tomcat -->
+        <!-- Jersey: реалізація JAX-RS для запуску на сервері -->
         <dependency>
             <groupId>org.glassfish.jersey.containers</groupId>
             <artifactId>jersey-container-servlet</artifactId>
@@ -111,7 +119,7 @@
     </dependencies>
 
     <build>
-        <finalName>lab4-apartment-rental-ejb</finalName>
+        <finalName>lab6-apartment-rental-jpa</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
